@@ -87,6 +87,8 @@ print "Building Theft4 $version ($build_version) for public iOS sideloading"
   -DTHEFT4_COMPILE_GTA4_NATIVE_BACKEND=ON \
   -DTHEFT4_ENABLE_GTA4_NATIVE_BACKEND=ON \
   -DTHEFT4_LAB_BUILD=ON \
+  -DTHEFT4_BUNDLE_IDENTIFIER=com.lukebrosious.theft4 \
+  -DTHEFT4_DISPLAY_NAME=Theft4 \
   "${renderer_build_args[@]}" \
   -DTHEFT4_SIGN_DEVICE=OFF \
   -DTHEFT4_PUBLIC_BUILD=ON \
