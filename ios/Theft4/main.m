@@ -2357,6 +2357,9 @@ didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls {
 #endif
 #ifdef THEFT4_BC_TEXTURE_COMPATIBILITY
         success = success && Theft4AppendDiagnosticFile(stream,
+            [supportURL URLByAppendingPathComponent:@"texture-preparation/scan-summary.json"],
+            @"Theft4/texture-preparation/scan-summary.json", &budget, included, skipped);
+        success = success && Theft4AppendDiagnosticFile(stream,
             [supportURL URLByAppendingPathComponent:@"texture-preparation/observed-textures.jsonl"],
             @"Theft4/texture-preparation/observed-textures.jsonl", &budget, included, skipped);
         success = success && Theft4AppendDiagnosticFile(stream,

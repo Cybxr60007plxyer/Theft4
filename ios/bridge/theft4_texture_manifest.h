@@ -23,6 +23,10 @@ using ScanObserver = std::function<void(const ScanProgress&)>;
 bool DecodeTextureResource(std::span<const uint8_t> file, std::vector<uint8_t>& data,
                            size_t& cpu_size, std::string& error);
 nlohmann::json TextureSourceFingerprint(const std::filesystem::path& game);
+bool CanReuseTextureManifest(const nlohmann::json& manifest,
+                             const nlohmann::json& fingerprint);
+// Bounded diagnostics, including an actionable error for an empty scan.
+nlohmann::json TextureScanSummary(const nlohmann::json& manifest);
 bool ScanTextureManifest(const std::filesystem::path& game,
                          const std::filesystem::path& aes_key,
                          const TextureVisitor& visitor, const ScanObserver& observer,

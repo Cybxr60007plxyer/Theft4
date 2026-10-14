@@ -284,3 +284,17 @@ different private container and is not migrated automatically.
 | TU8 or patch mismatch | The update is for another base revision or region. Use the exact `0.0.0.5 → 0.0.8.5` update described above. |
 | App still shows no game after copying | The transfer may still be running or may have gone to iCloud Drive instead of **On My iPhone/iPad → Theft4 → game**. |
 | Files disappear after reinstalling | Uninstalling an iOS app removes its container. Update in place where possible and keep separate backups of game data and saves. |
+
+## 0.3.2: texture preparation failures on older phones
+
+0.3.2 is a potential scanner/cache fix. Retry rescans empty results, and restoring
+or replacing `game/aes_key.bin` invalidates the scan. Older phones were not tested
+for this patch; YMMV. The exact Xbox 360 USA retail base `0.0.0.5` and matching
+TU8 to `0.0.8.5` requirements above still apply, including the patch SHA-256.
+
+After a preparation failure, return to the launcher and select **System →
+Download Latest Log Capture**. Submit the exported file, exact error, device and
+iOS/app version, free storage, and game/update/staging details through the linked
+bug submission form. Gameplay and Long Performance Capture are not required for
+a preparation failure. Without logs or information, “it doesn't work” cannot be
+investigated. See the [0.3.2 release notes](RELEASE_0.3.2.md).

@@ -1,5 +1,16 @@
 # Theft4 engineering changelog
 
+## 0.3.2 — potential BC texture preparation fix — 2026-10-14
+
+**Version 0.3.2 · build 144 · iPhone and iPad**
+
+- Rescan zero-texture manifests on retry instead of reusing a failed result.
+- Include archive-key contents in the opaque source fingerprint; refresh older identities while retaining converted payloads for content-key reuse.
+- Show scan counts and the first underlying warning for empty scans; include a bounded scan summary in diagnostic exports.
+- Reiterate the exact supported Xbox 360 USA retail base/TU8 pair and require logs and device/install details for actionable reports.
+
+Potential fix; older phones are untested for this release. YMMV. Host regression tests do not identify every reported failure. [Full release notes](docs/RELEASE_0.3.2.md).
+
 ## 0.3.1 — performance improvements and optional mods — 2026-10-09
 
 **Version 0.3.1 · build 142 · iPhone and iPad**

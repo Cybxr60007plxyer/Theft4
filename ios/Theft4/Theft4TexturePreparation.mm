@@ -105,8 +105,7 @@ NSDictionary *Dictionary(const Json& value) {
       const Path game_path(game.fileSystemRepresentation);
       const auto fingerprint = theft4::astc::TextureSourceFingerprint(game_path);
       Json manifest = Load(root / "archive-texture-manifest.json");
-      if (!manifest.is_object() || manifest.value("schemaVersion", 0) != 1 ||
-          manifest.value("sourceFingerprint", Json::object()) != fingerprint) {
+      if (!theft4::astc::CanReuseTextureManifest(manifest, fingerprint)) {
         notify({{"phase", "indexing"}, {"completed", 0}, {"total", 0}}, true);
         const auto scan_started = std::chrono::steady_clock::now();
         if (!theft4::astc::ScanTextureManifest(game_path, game_path / "aes_key.bin", {},
@@ -119,8 +118,10 @@ NSDictionary *Dictionary(const Json& value) {
           }, self->_cancelRequested, manifest, error)) throw std::runtime_error(error);
         Save(root / "archive-texture-manifest.json", manifest);
       }
+      const auto scan_summary = theft4::astc::TextureScanSummary(manifest);
+      Save(root / "scan-summary.json", scan_summary);
       const auto total = manifest.at("uniqueTextures").get<size_t>();
-      if (!total) throw std::runtime_error("No supported static BC textures were found.");
+      if (!total) throw std::runtime_error(scan_summary.at("error").get<std::string>());
       uint64_t cache_bytes = 0, required_bytes = 0;
       std::error_code ec;
       std::filesystem::create_directories(root / "astc-v1");

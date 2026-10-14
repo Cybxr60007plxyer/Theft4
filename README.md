@@ -37,7 +37,7 @@ LibertyRecomp/ReXGlue's generated-code and runtime foundation. The official app
 identity remains `com.lukebrosious.theft4`.
 
 > [!NOTE]
-> **0.3.1 is available:** [download the unsigned iOS IPA](https://github.com/KoreanSeats1/Theft4/releases/tag/v0.3.1).
+> **0.3.2 is available:** [download the unsigned iOS IPA](https://github.com/KoreanSeats1/Theft4/releases/tag/v0.3.2).
 > Update in place using your sideloading tool. TestFlight publication is separate.
 > M5 testing reports excellent visuals and a major native-resolution performance
 > improvement, with a remaining spike that recovers. The tested native run used
@@ -53,6 +53,19 @@ assistant through the official release, signing, exact game/TU8 validation,
 file transfer, one-time texture preparation where required, and a gameplay check.
 A chat-only assistant can guide the manual steps; Apple sign-in and device
 actions may still require you. You supply your own supported game files.
+
+## What changed in 0.3.2
+
+A potential fix for older-device BC texture preparation rescans empty results,
+invalidates the scan when the archive key changes, and includes the underlying
+scan warnings in errors and exported diagnostics. Older phones are untested for
+this patch; YMMV. Reports need logs, device/app versions and the exact game/TU8
+information: “it doesn't work” alone cannot be investigated.
+
+Use Xbox 360 GTA IV **USA retail**, title `545407F2`, media `6AC07221`, base
+`0.0.0.5`, with matching **TU8** to `0.0.8.5`. The exact patch SHA-256,
+retry instructions and reporting requirements are in the
+[0.3.2 release notes](docs/RELEASE_0.3.2.md).
 
 ## What changed in 0.3.1
 

@@ -296,8 +296,64 @@ nlohmann::json TextureSourceFingerprint(const std::filesystem::path& game) {
     files.push_back({p.lexically_relative(game).generic_string(), std::filesystem::file_size(p),
       std::filesystem::last_write_time(p).time_since_epoch().count()});
   }
-  const auto text = files.dump();
-  return {{"schema", 1}, {"files", files.size()}, {"digest", XXH3_64bits(text.data(), text.size())}};
+  auto text = files.dump();
+  // Archive decryption is an input to scanning too. Include the key contents
+  // in the opaque fingerprint, never in the manifest or diagnostic output.
+  const auto key_path = game / "aes_key.bin";
+  text += "\narchive-key:";
+  if (std::filesystem::is_regular_file(key_path)) {
+    const auto size = std::filesystem::file_size(key_path);
+    text += std::to_string(size) + ':';
+    if (size) {
+      const auto key = Read(key_path, 0, std::min<uint64_t>(size, 32), 32);
+      text.append(reinterpret_cast<const char*>(key.data()), key.size());
+    }
+  } else text += "missing";
+  return {{"schema", 2}, {"files", files.size()}, {"digest", XXH3_64bits(text.data(), text.size())}};
+}
+
+bool CanReuseTextureManifest(const Json& manifest, const Json& fingerprint) {
+  try {
+    // A failed/empty scan must be retried, including manifests saved by older
+    // builds. Completed ASTC payloads remain reusable by their content keys.
+    return manifest.is_object() && manifest.value("schemaVersion", 0) == 1 &&
+        manifest.at("sourceFingerprint") == fingerprint &&
+        manifest.at("uniqueTextures").get<size_t>() > 0 &&
+        manifest.at("textures").is_array() && !manifest.at("textures").empty();
+  } catch (const Json::exception&) { return false; }
+}
+
+Json TextureScanSummary(const Json& manifest) {
+  const auto sources = manifest.at("sourceFingerprint").at("files").get<size_t>();
+  const auto resources = manifest.at("resourcesRead").get<size_t>();
+  const auto textures = manifest.at("uniqueTextures").get<size_t>();
+  const auto& warnings = manifest.at("warnings");
+  Json sample = Json::array();
+  for (size_t i = 0; i < std::min<size_t>(warnings.size(), 8); ++i)
+    sample.push_back(warnings.at(i));
+  std::string error;
+  if (!textures) {
+    error = "No supported static BC textures were found. Scanned " +
+        std::to_string(sources) + " source files; decoded " +
+        std::to_string(resources) + " resources; " + std::to_string(warnings.size()) +
+        " read warnings.";
+    if (!sources)
+      error += " Check that the selected game folder contains the extracted Xbox 360 archives and resources.";
+    else if (!resources)
+      error += " The scanner could not decode any texture resources. Check the archive format and game/aes_key.bin.";
+    else
+      error += " Resources were decoded but no supported 2D BC1/BC2/BC3 texture layouts matched. The assets may use an unsupported revision or format.";
+    if (!warnings.empty()) {
+      const auto& first = warnings.at(0);
+      error += " First warning: " + first.at("container").get<std::string>();
+      if (first.contains("entry")) error += " / " + first.at("entry").get<std::string>();
+      error += ": " + first.at("error").get<std::string>();
+    }
+    error += " Retry will scan again. Export diagnostics if the files are correct.";
+  }
+  return {{"schemaVersion", 1}, {"sourceFiles", sources}, {"resourcesRead", resources},
+          {"uniqueTextures", textures}, {"warningCount", warnings.size()},
+          {"warningSamples", sample}, {"error", error}};
 }
 
 bool ScanTextureManifest(const std::filesystem::path& game, const std::filesystem::path& aes_key,
