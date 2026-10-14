@@ -52,6 +52,8 @@ Requires ARM64 iOS/iPadOS 26.0 or later. This GitHub sideload release is separat
 
 ## Validation and limitations
 
-The encrypted-archive regression reproduces a zero-texture scan with a missing key and successful detection after key restoration. Scanner bounds/resume/source-identity tests, ASTC conversion/cache tests, BC capability policy tests, and launcher routing tests pass. The iOS preparation service also passes a syntax check.
+The encrypted-archive regression reproduces a zero-texture scan with a missing key and successful detection after key restoration. Scanner bounds/resume/source-identity tests, ASTC conversion/cache tests, BC capability policy tests, and launcher routing tests pass. The iOS preparation service also passes a syntax check. The clean iPhoneOS Release build and compiler optimization audit passed. The packaged app was audited as ARM64, version 0.3.2/build 144, with all 2,736 Metal libraries and no development provisioning, signature or retail game payload. The IPA records runtime source `c65cfe09`; subsequent release changes are documentation only.
+
+IPA SHA-256: `8f7d3a2865a10f34af0cdd736ee66677ac2614207651d60267d61a47cced9f57`.
 
 **No physical iPhone 12 Pro, iPhone 13 Pro, or other older-phone test was performed for this release.** Host tests and compilation do not confirm the initial cause on an affected phone. Please provide diagnostics if the issue persists.

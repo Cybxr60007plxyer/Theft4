@@ -1,7 +1,7 @@
 # Install a sideloaded Theft4 IPA
 
 These instructions are for the unsigned ARM64 IPA attached to the
-[Theft4 0.3.1 GitHub release](https://github.com/KoreanSeats1/Theft4/releases/tag/v0.3.1).
+[Theft4 0.3.2 GitHub release](https://github.com/KoreanSeats1/Theft4/releases/tag/v0.3.2).
 The IPA contains the application and statically recompiled game code,
 but it does **not** contain Grand Theft Auto IV game data or a title update.
 
