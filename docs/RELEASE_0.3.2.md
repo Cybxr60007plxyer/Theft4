@@ -6,6 +6,16 @@ This release addresses a confirmed scanner/cache bug behind repeated **“No sup
 
 **I don't have an older phone, so I cannot test these changes on one. Your mileage may vary (YMMV).**
 
+## Getting “No BC textures found”? Check this first
+
+The first thing to check is a missing or misplaced `aes_key.bin`. This has now been confirmed in a 0.3.2 user log. Your game files can be present, but Theft4 needs this small file to read the texture archives. If the log says “Archive AES key is unavailable,” the app did not load the required key; this does not establish a phone/GPU problem.
+
+Copy `aes_key.bin` from your validated, prepared game folder into the same folder as `default.xex` and `default.xexp` on your device. It should be named exactly `aes_key.bin` and be 32 bytes. Do not put it inside an extra nested folder.
+
+If you use LiveContainer, make sure the file is in the game folder used by the copy of Theft4 inside LiveContainer.
+
+Then close and reopen Theft4 and retry texture preparation. Version 0.3.2 will rescan after the key is restored. If it still fails, export a new log using System → Download Latest Log Capture and include your device model, iOS/app version and exact error.
+
 ## What changed
 
 - A scan that finds zero textures is scanned again on retry instead of repeatedly reusing a failed result.
