@@ -368,6 +368,8 @@ promoted and how unrelated local experiments were preserved.
   private Lab artifact. Instrumented FPS is diagnostic evidence, not acceptance
   performance; repeat the route with profiling disabled for the control.
 
+  
+
 This file is the durable, public engineering record for Theft4. It records
 implementation changes, experiments, validation evidence, and known limits. It
 is intentionally more detailed than a release-note summary because this project
